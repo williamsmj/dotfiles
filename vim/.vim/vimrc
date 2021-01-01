@@ -26,9 +26,9 @@ Plug 'tpope/vim-unimpaired'
 Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-obsession'
 Plug 'MaxMEllon/vim-jsx-pretty'
-Plug 'w0rp/ale'
 if has("nvim")
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    Plug 'neovim/nvim-lspconfig'
+    Plug 'nvim-lua/completion-nvim'
     Plug 'wincent/corpus'
 endif
 call plug#end()
@@ -37,6 +37,12 @@ try
     source ~/.vim/private.vim
 catch
 endtry
+
+set completeopt=menuone,noinsert,noselect
+" set shortmess+=c
+let g:completion_enable_auto_popup = 0
+imap <tab> <Plug>(completion_smart_tab)
+imap <s-tab> <Plug>(completion_smart_s_tab)
 
 " Buffers
 set hidden
@@ -216,15 +222,6 @@ augroup edit_code
     autocmd FileType javascript,typescript,typescriptreact setlocal shiftwidth=2
     autocmd FileType go setlocal shiftwidth=8 tabstop=8 noexpandtab
 augroup END
-
-let g:ale_fixers = {'python': ['isort', 'black']}
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_fix_on_save = 1
-" Unimpaired-style mappings to jump to ALE warnings/errors
-nmap <silent> [W <Plug>(ale_first)
-nmap <silent> [w <Plug>(ale_previous)
-nmap <silent> ]w <Plug>(ale_next)
-nmap <silent> ]W <Plug>(ale_last)
 
 " Expand %% to directory of file in current buffer (also %:h<Tab>)
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
